@@ -11,8 +11,8 @@ as provided in this repository.
 
 ## Content
 
-[Source code](./src/TableLayout.js)
-[Documentation](./docs/TableLayout.md)
+-	[Source code](./src/TableLayout.js)
+-	[Documentation](./docs/TableLayout.md)
 
 
 ## Contribute
