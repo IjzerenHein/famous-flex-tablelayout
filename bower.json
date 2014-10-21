@@ -1,0 +1,39 @@
+{
+  "name": "famous-flex-tablelayout",
+  "version": "0.0.1",
+  "homepage": "https://github.com/IjzerenHein/famous-flex-tablelayout",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/IjzerenHein/famous-flex-tablelayout.git"
+  },
+  "authors": [
+    "Hein Rutjes <hrutjes@gmail.com>"
+  ],
+  "description": "iOS inspired table-view for famo.us",
+  "keywords": [
+    "famo.us",
+    "famous",
+    "flex",
+    "famous-flex",
+    "scrollview",
+    "tablelayout",
+    "flex-tablelayout",
+    "famous-flex-tablelayout"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests",
+    "examples",
+    "docs",
+    "Gruntfile.js",
+    "CONTRIBUTORS.md",
+    "package.json"
+  ],
+  "devDependencies": {
+    "requirejs": "~2.1.11",
+    "famous": "~0.3.0"
+  }
+}

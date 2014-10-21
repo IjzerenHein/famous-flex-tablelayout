@@ -1,0 +1,29 @@
+body, div {
+    font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: normal;
+}
+body {
+  background: white;
+}
+
+.section-back {
+  z-index: 10;
+  background: rgba(200, 200, 200, 0.95);
+  border-bottom: 1px solid #aaaaaa;
+}
+
+.section-text {
+  z-index: 11;
+  line-height: 50px;
+  font-weight: bold;
+}
+
+.cell-back {
+  background: white;
+  border-bottom: 1px solid #aaaaaa;
+}
+
+.cell-text {
+  z-index: 1;
+  line-height: 50px;
+}
