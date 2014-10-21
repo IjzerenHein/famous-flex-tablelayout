@@ -11,28 +11,54 @@
 /*global define*/
 
 /**
- * Lays out a collection of renderables from top to bottom or left to right.
+ * Lays out a sections and cells and makes the section stick to the top (or left) side
+ * of the scollview.
  *
  * |options|type|description|
  * |---|---|---|
- * |`[itemSize]`|Number|Height or width in pixels of the list-item|
+ * |`[isSectionCallback]`|Function|Callback that is called in order to check if a render-node is a section rather than a cell.|
+ * |`[itemSize]`|Number|Height or width in pixels of an item (used when renderNode has no size)|
  *
  * Example:
  *
  * ```javascript
- * var ListLayout = require('famous-flex/layouts/ListLayout');
+ * var TableLayout = require('famous-flex-tablelayout/TableLayout');
  *
  * new LayoutController({
- *   layout: ListLayout,
+ *   layout: TableLayout,
  *   layoutOptions: {
- *     itemSize: 40,         // item has height of 40 pixels
+ *     isSectionCallback: _isSection,
  *   },
  *   dataSource: [
- *     new Surface({content: 'item 1'}),
- *     new Surface({content: 'item 2'}),
- *     new Surface({content: 'item 3'})
+ *     // first section
+ *     _createSection(),
+ *     _createCell(),
+ *     _createCell(),
+ *     // second section
+ *     _createSection(),
+ *     _createCell(),
  *   ]
  * })
+ *
+ * function _createCell() {
+ *   return new Surface({
+ *     size: [undefined, 50],
+ *     content: 'my cell'
+ *   });
+ * }
+ *
+ * function _createSection() {
+ *   var section = new Surface({
+ *     size: [undefined, 30],
+ *     content: 'my sticky section'
+ *   });
+ *   section.isSection = true; // mark renderNode as section
+ *   return section;
+ * }
+ *
+ * function _isSection(renderNode) {
+ *   return renderNode.isSection;
+ * }
  * ```
  * @module
  */
@@ -151,7 +177,7 @@ define(function(require, exports, module) {
         // When no first section is in the scrollable range, then
         // look back further in search for the that section
         //
-        if (node && !lastSectionBeforeVisibleCell) {
+        if (node && !lastSectionBeforeVisibleCell && options.isSectionCallback) {
             node = context.prev();
             while (node && !lastSectionBeforeVisibleCell) {
                 if (options.isSectionCallback && options.isSectionCallback(context.getRenderNode(node))) {
@@ -190,6 +216,6 @@ define(function(require, exports, module) {
 
     TableLayout.Capabilities = capabilities;
     TableLayout.Name = 'TableLayout';
-    TableLayout.Description = 'Layout for TableView supporting sticky sections';
+    TableLayout.Description = 'Layout for sections and cells';
     module.exports = TableLayout;
 });

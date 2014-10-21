@@ -1,7 +1,19 @@
 famous-flex-tablelayout
 ==========
 
+iOS inspired TableView-layout with sticky headers.
+
+The demo consists of a famous-flex ScrollView and the TableLayout
+as provided in this repository. 
+
 [View the live demo here](https://rawgit.com/IjzerenHein/famous-flex-tablelayout/master/example/dist/index.html)
+
+
+## Content
+
+[Source code](./src/TableLayout.js)
+[Documentation](./docs/TableLayout.md)
+
 
 ## Contribute
 
