@@ -93,6 +93,10 @@ define(function(require, exports, module) {
         var lastSectionBeforeVisibleCell;
         var firstVisibleCell;
         var lastCellOffsetInFirstVisibleSection;
+        var firstCell;
+        var firstCellOffset;
+        var lastCell;
+        var lastCellOffset;
 
         //
         // Determine item-size or use true=size
@@ -113,6 +117,23 @@ define(function(require, exports, module) {
                 break;
             }
             nodeSize = (itemSize === true) ? context.resolveSize(node, size)[direction] : itemSize;
+
+            //
+            // Detect the first and last cell
+            //
+            if (!firstCell) {
+                firstCell = node;
+                firstCellOffset = offset;
+                if (options.isPullToRefreshCallback && options.isPullToRefreshCallback(context.getRenderNode(firstCell))) {
+                    nodeSize = 0;
+                }
+            }
+            lastCell = node;
+            lastCellOffset = offset;
+
+            //
+            // Position node
+            //
             set = {
                 size: direction ? [size[0], nodeSize] : [nodeSize, size[1]],
                 translate: direction ? [0, offset, 0] : [offset, 0, 0],
@@ -133,6 +154,10 @@ define(function(require, exports, module) {
             } else if (!firstVisibleCell && (offset >= 0)) {
                 firstVisibleCell = node;
             }
+        }
+        if (!lastCell) {
+            lastCell = context.next();
+            lastCellOffset = offset;
         }
 
         //
@@ -171,6 +196,16 @@ define(function(require, exports, module) {
             };
             context.set(node, set);
             offset -= nodeSize;
+
+            //
+            // Detect the first and last cell
+            //
+            firstCell = node;
+            firstCellOffset = offset;
+            if (!lastCell) {
+                lastCell = node;
+                lastCell = offset;
+            }
         }
 
         //
@@ -210,6 +245,34 @@ define(function(require, exports, module) {
                 size: lastSectionBeforeVisibleCell.set.size,
                 translate: translate,
                 scrollLength: lastSectionBeforeVisibleCell.set.scrollLength
+            });
+        }
+
+        //
+        // Reposition "pull to refresh" renderable at the top
+        //
+        if (firstCell && (firstCellOffset > 0) &&
+           options.isPullToRefreshCallback && options.isPullToRefreshCallback(context.getRenderNode(firstCell))) {
+            firstCell.set.translate[direction] = 0;
+            firstCell.set.size[direction] = firstCellOffset;
+            context.set(firstCell, {
+                size: firstCell.set.size,
+                translate: firstCell.set.translate,
+                scrollLength: firstCell.set.scrollLength
+            });
+        }
+
+        //
+        // Reposition "pull to refresh" renderable at the bottom
+        //
+        if (lastCell && (lastCellOffset < context.size[direction]) &&
+           options.isPullToRefreshCallback && options.isPullToRefreshCallback(context.getRenderNode(lastCell))) {
+            lastCell.set.translate[direction] = lastCellOffset;
+            lastCell.set.size[direction] = context.size[direction] - lastCellOffset;
+            context.set(lastCell, {
+                size: lastCell.set.size,
+                translate: lastCell.set.translate,
+                scrollLength: 0
             });
         }
     }

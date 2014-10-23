@@ -54,6 +54,9 @@ define(function(require) {
             // whether a node is a section
             isSectionCallback: function(renderNode) {
                 return renderNode.options.isSection;
+            },
+            isPullToRefreshCallback: function(renderNode) {
+                return renderNode.isPullToRefresh;
             }
         },
         dataSource: viewSequence,
@@ -62,11 +65,28 @@ define(function(require) {
     mainContext.add(scrollView);
 
     // create view-sequence containing items
+    viewSequence.push(_createPullToRefreshCell());
     for (j = 1; j <= 10; j++) {
-        viewSequence.push(_createSection(j));
+        var title = 'This is a sticky section ' + j;
+        if (j === 1) {
+            title = 'Try pull down to refresh!';
+        }
+        viewSequence.push(_createSection(title));
         for (i = 1 ; i <= 5; i++) {
             viewSequence.push(_createCell(i));
         }
+    }
+    viewSequence.push(_createPullToRefreshCell());
+
+    /**
+     * Create pull to refresh cell
+     */
+    function _createPullToRefreshCell(index) {
+        var surface = new Surface({
+            classes: ['pull-to-refresh']
+        });
+        surface.isPullToRefresh = true;
+        return surface;
     }
 
     /**
@@ -96,7 +116,7 @@ define(function(require) {
     /**
      * Creates a section
      */
-    function _createSection(index) {
+    function _createSection(text) {
         return new LayoutController({
             size: [undefined, 50],
             isSection: true,
@@ -111,7 +131,7 @@ define(function(require) {
                     classes: ['section-back']
                 }),
                 text: new Surface({
-                    content: 'This is a sticky section ' + index,
+                    content: text,
                     classes: ['section-text']
                 })
             }
