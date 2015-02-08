@@ -1,6 +1,7 @@
 {
   "name": "famous-flex-tablelayout",
   "version": "0.0.1",
+  "private": "true",
   "homepage": "https://github.com/IjzerenHein/famous-flex-tablelayout",
   "repository": {
     "type": "git",
